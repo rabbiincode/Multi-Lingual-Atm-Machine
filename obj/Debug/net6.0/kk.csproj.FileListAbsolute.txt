@@ -1,0 +1,17 @@
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.csproj.AssemblyReference.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.AssemblyInfoInputs.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.AssemblyInfo.cs
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.csproj.CoreCompileInputs.cache
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\kk.exe
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\kk.deps.json
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\kk.runtimeconfig.json
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\kk.dll
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\kk.pdb
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ConsoleTables.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.csproj.CopyComplete
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\refint\kk.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.pdb
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\kk.genruntimeconfig.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ref\kk.dll

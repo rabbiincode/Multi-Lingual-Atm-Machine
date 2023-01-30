@@ -1,0 +1,17 @@
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ShegeBank.exe
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ShegeBank.deps.json
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ShegeBank.runtimeconfig.json
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ShegeBank.dll
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ShegeBank.pdb
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.csproj.AssemblyReference.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.AssemblyInfoInputs.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.AssemblyInfo.cs
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.csproj.CoreCompileInputs.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\refint\ShegeBank.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.pdb
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.genruntimeconfig.cache
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ref\ShegeBank.dll
+C:\Users\USER\Desktop\ShegeBank\bin\Debug\net6.0\ConsoleTables.dll
+C:\Users\USER\Desktop\ShegeBank\obj\Debug\net6.0\ShegeBank.csproj.CopyComplete
