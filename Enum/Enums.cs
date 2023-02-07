@@ -26,6 +26,7 @@ public enum MobileChoice
     Self = 1,
     Others
 }
+
 public enum Recharge
 {
     TwoHundred = 1,
@@ -35,11 +36,9 @@ public enum Recharge
     Others
 }
 
-public enum TransactionType
+public enum Language
 {
-    Deposit,
-    Withdrawal,
-    Transfer,
-    Airtime,
-    TransactionHistory,
+    English = 1,
+    Pigin,
+    Igbo
 }

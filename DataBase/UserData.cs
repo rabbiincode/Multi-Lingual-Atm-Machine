@@ -1,4 +1,4 @@
-﻿using ShegeBank.Bank;
+﻿using ShegeBank.Models;
 
 namespace ShegeBank.DataBase;
 

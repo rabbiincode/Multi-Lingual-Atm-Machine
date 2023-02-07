@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
+﻿using ShegeBank.LanguageChoice;
+using System.ComponentModel;
 
-namespace ShegeBank.UI;
+namespace ShegeBank.UserInterface;
 
 internal class Validate
 {
@@ -24,7 +25,7 @@ internal class Validate
             }
             catch
             {
-                Utility.PrintMessage("Invalid Input...try again", false);
+                Utility.PrintMessage($"{Languages.Display(3)}", false);
             }
         }
         return default;

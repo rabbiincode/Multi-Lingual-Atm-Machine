@@ -1,9 +1,11 @@
-﻿using ShegeBank.DataBase;
+﻿using ShegeBank.Bank.AtmFunctionality;
+using ShegeBank.DataBase;
 using ShegeBank.Enum;
 using ShegeBank.Interfaces;
-using ShegeBank.UI;
+using ShegeBank.LanguageChoice;
+using ShegeBank.UserInterface;
 
-namespace ShegeBank.Bank.AtmFunctionality;
+namespace ShegeBank.Bank;
 
 internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
 {
@@ -15,11 +17,11 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
         UserData.InitializeData();
 
         bool login = false;
-        long cardNumber = Validate.Convert<long>("your card number");
+        long cardNumber = Validate.Convert<long>("Enter your card number[Insert your ATM Card]");
 
         while (login == false)
         {
-            Utility.Loading("Please wait", ".", 6, 500);
+            Utility.Loading("Please wait..[Abeg wait]..[Biko chere]", ".", 6, 500);
             try
             {
                 var accountSelected = (from account in UserData.UserAccountList
@@ -30,7 +32,7 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
             }
             catch
             {
-                Utility.PrintMessage("Your ATM card is invalid", false);
+                Utility.PrintMessage("Your ATM card is invalid..[ATM card no dey valid]..[ATM anabataro card gi]", false);
                 Thread.Sleep(4000);
                 Pick.Cancel();
                 login = true;
@@ -46,13 +48,15 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
                 break;
             }
 
-            inputPin: int pin = Utility.GetUserPin("Enter your pin");
+            Languages.ValidateLanguageChoice();
+
+            inputPin: int pin = Utility.GetUserPin($"{Languages.Display(4)}");
 
             if (pin == UserData.selectedAccount.CardPin)
             {
-                Utility.Loading("Please wait", ".", 6, 500);
+                Utility.Loading($"{Languages.Display(5)}", ".", 6, 500);
 
-                Utility.PrintMessage($"Hello {UserData.selectedAccount.FullName}, welcome back", true);
+                Utility.PrintMessage($"Hello {UserData.selectedAccount.FullName}, welcome back...[Nnoo]", true);
                 Thread.Sleep(2000);
                 UserData.selectedAccount.TotalLogin = 0;
                 login = true;
@@ -60,12 +64,12 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
             }
             else
             {
-                Utility.PrintMessage("\nIncorrect pin...please try again", false);
+                Utility.PrintMessage($"\n{Languages.Display(6)}", false);
                 UserData.selectedAccount.TotalLogin++;
 
                 if (UserData.selectedAccount.TotalLogin == 2)
                 {
-                    Utility.PrintMessage("Your account will be locked on the third wrong attempt", false);
+                    Utility.PrintMessage($"{Languages.Display(7)}", false);
                     Thread.Sleep(4000);
                 }
 
@@ -85,8 +89,8 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
     public void CheckBalance()
     {
         Console.ForegroundColor = ConsoleColor.Blue;
-        Utility.Loading("Please wait", ".", 6, 500);
-        Console.WriteLine($"| Account balance : {Utility.FormatCurrency(UserData.selectedAccount.AccountBalance)} |");
+        Utility.Loading($"{Languages.Display(5)}", ".", 6, 500);
+        Console.WriteLine($"| {Languages.Display(8)} : {Utility.FormatCurrency(UserData.selectedAccount.AccountBalance)} |");
         Utility.PressEnterToContinue();
     }
     public void Deposit()
@@ -97,10 +101,9 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
     public void ValidateDeposit()
     {
         Console.Clear();
-        Console.ForegroundColor = ConsoleColor.DarkYellow;
-        startDeposit: Utility.PrintMessage("Deposit must be made in multiples of 500 and 1000 only", false);
+        startDeposit: Utility.PrintMessage($"{Languages.Display(9)}", false);
         Utility.PressEnterToContinue();
-        decimal depositAmount = Validate.Convert<decimal>("the amount you want to deposit");
+        decimal depositAmount = Validate.Convert<decimal>($"{Languages.Display(10)}");
 
         if (depositAmount % 500 != 0 || depositAmount == 0)
             goto startDeposit;
@@ -108,16 +111,16 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
         decimal thousandCount = depositAmount / 1000;
         decimal hundredCount = (depositAmount % 1000) / 500;
 
-        Thread.Sleep(2000);
-        Utility.PrintMessage("Please ensure that cash loaded into the machine are ONLY in multiple of 500 and 1000" +
-                            " \nas the atm cannot dispense back non-multiples once loaded and will not validate them", false);
+        Utility.PrintMessage($"{Languages.Display(11)}", false);
         Utility.PressEnterToContinue();
-        Utility.Loading("Please load your cash in the atm's cash collector", "<<", 7, 800);
-        Utility.Loading("Validating cash...please wait", ".", 6, 500);
-        Utility.Loading("Counting cash", ".", 7, 600);
+
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Utility.Loading($"{Languages.Display(12)}", "<<", 7, 800);
+        Utility.Loading($"{Languages.Display(13)}", ".", 6, 500);
+        Utility.Loading($"{Languages.Display(14)}", ".", 7, 600);
 
 
-        Console.WriteLine("------------------Deposit Summary------------------");
+        Console.WriteLine($"------------------{Languages.Display(15)}------------------");
         if (depositAmount == 500)
         {
             Console.WriteLine($">500 X {hundredCount} = {Utility.FormatCurrency(500 * hundredCount)}");
@@ -131,16 +134,16 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
             Console.WriteLine($">1000 X {(int)thousandCount} = {Utility.FormatCurrency(1000 * (int)thousandCount)}");
             Console.WriteLine($">500 X {hundredCount} = {Utility.FormatCurrency(500 * hundredCount)}");
         }
-        Console.WriteLine($"\nTotal : {Utility.FormatCurrency(depositAmount)}");
+        Console.WriteLine($"\n{Languages.Display(16)} : {Utility.FormatCurrency(depositAmount)}");
         Console.WriteLine("---------------------------------------------------");
 
         Utility.PressEnterToContinue();
 
-        Utility.PrintMessage($"Your deposit of {Utility.FormatCurrency(depositAmount)} was successful", true);
+        Utility.PrintMessage($"{Languages.Display(17)} {Utility.FormatCurrency(depositAmount)} {Languages.Display(18)}", true);
         Utility.PressEnterToContinue();
         UserData.selectedAccount.AccountBalance += depositAmount;
 
-        InsertTransaction(UserData.selectedAccount.Id, TransactionType.Deposit, Utility.FormatCurrency(depositAmount), "Cash deposit at shege bank atm");
+        InsertTransaction(UserData.selectedAccount.Id, $"{Languages.Display(87)}", Utility.FormatCurrency(depositAmount), $"{Languages.Display(50)}");
     }
     public void Withdrawal()
     {
@@ -150,7 +153,7 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
 
     public void ValidateWithdrawal()
     {
-        option: int withdrawalOption = Validate.Convert<int>("option");
+        option: int withdrawalOption = Validate.Convert<int>($"{Languages.Display(19)}");
 
         switch (withdrawalOption)
         {
@@ -176,7 +179,7 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
                 OtherWithdrawal();
                 break;
             default:
-                Utility.PrintMessage("Invalid input...please select any option", false);
+                Utility.PrintMessage($"{Languages.Display(20)}", false);
                 goto option;
         }
     }
@@ -184,7 +187,7 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
     {
         if (withdrawalAmount >= UserData.selectedAccount?.AmountWithdrawable)
         {
-            Utility.PrintMessage("Insufficient fund", false);
+            Utility.PrintMessage($"{Languages.Display(21)}", false);
             Utility.PressEnterToContinue();
             return;
         }
@@ -193,30 +196,30 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
     }
     public void OtherWithdrawal()
     {
-        startWithdrawal: int otherWithdrawalAmount = Validate.Convert<int>("the amount you want to withdraw");
+        startWithdrawal: int otherWithdrawalAmount = Validate.Convert<int>($"{Languages.Display(22)}");
 
         if (otherWithdrawalAmount <= 0)
         {
-            Utility.PrintMessage("Amount must be greater than 0", false);
+            Utility.PrintMessage($"{Languages.Display(23)}", false);
             goto startWithdrawal;
         }
 
         if (otherWithdrawalAmount % 500 != 0)
         {
-            Utility.PrintMessage("Amount must be in multiples of 500 and 1000", false);
+            Utility.PrintMessage($"{Languages.Display(24)}", false);
             goto startWithdrawal;
         }
             
         if (otherWithdrawalAmount >= UserData.selectedAccount?.AmountWithdrawable)
         {
-            Utility.PrintMessage("Insufficient fund", false);
+            Utility.PrintMessage($"{Languages.Display(21)}", false);
             Utility.PressEnterToContinue();
             return;
         }
 
         if (otherWithdrawalAmount > maximumWithdrawalAmount)
         {
-            Utility.PrintMessage($"Cannot withdraw more than {Utility.FormatCurrency(maximumWithdrawalAmount)}", false);
+            Utility.PrintMessage($"{Languages.Display(25)} {Utility.FormatCurrency(maximumWithdrawalAmount)}", false);
             goto startWithdrawal;
         }
 
@@ -225,16 +228,16 @@ internal partial class Atm : IUserLogin, IUserMainOptions, ITrackTransaction
 
     public void WithdrawalMessage(decimal amount)
     {
-        Utility.Loading("Please wait", ".", 6, 500);
-        Utility.Loading("...........Please Note - The atm does not take back cash after despensing...........", "", 6, 400);
+        Utility.Loading($"{Languages.Display(5)}", ".", 6, 500);
+        Utility.Loading($"...........{Languages.Display(26)}...........", "", 6, 400);
 
-        Utility.PrintMessage($"Your withdrawal of {Utility.FormatCurrency(amount)} was successful", true);
+        Utility.PrintMessage($"{Languages.Display(27)} {Utility.FormatCurrency(amount)} {Languages.Display(28)}", true);
         Utility.Loading("","", 5, 500);
-        Utility.PrintMessage("Please take your cash", true);
+        Utility.PrintMessage($"{Languages.Display(29)}", true);
         Thread.Sleep(4000);
 
         UserData.selectedAccount.AccountBalance -= amount;
 
-        InsertTransaction(UserData.selectedAccount.Id, TransactionType.Withdrawal, Utility.FormatCurrency(amount), "Cash withdrawal at shege bank atm");
+        InsertTransaction(UserData.selectedAccount.Id, $"{Languages.Display(88)}", Utility.FormatCurrency(amount), $"{Languages.Display(51)}");
     }
-}
+} 

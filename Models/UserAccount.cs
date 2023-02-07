@@ -1,4 +1,4 @@
-﻿namespace ShegeBank.DataBase;
+﻿namespace ShegeBank.Models;
 
 internal class UserAccount
 {

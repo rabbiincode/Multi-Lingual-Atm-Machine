@@ -1,9 +1,11 @@
 ﻿using ConsoleTables;
 using ShegeBank.DataBase;
 using ShegeBank.Enum;
-using ShegeBank.UI;
+using ShegeBank.LanguageChoice;
+using ShegeBank.Models;
+using ShegeBank.UserInterface;
 
-namespace ShegeBank.Bank.AtmFunctionality;
+namespace ShegeBank.Bank;
 
 internal partial class Atm
 {
@@ -16,23 +18,23 @@ internal partial class Atm
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Blue;
-        transfer: decimal transferAmount = Validate.Convert<decimal>("the amount you want to transfer");
+        transfer: decimal transferAmount = Validate.Convert<decimal>($"{Languages.Display(30)}");
 
         if (transferAmount <= 0)
         {
-            Utility.PrintMessage("Amount must be greater than 0", false);
+            Utility.PrintMessage($"{Languages.Display(23)}", false);
             Thread.Sleep(4000);
             goto transfer;
         }
 
         if (transferAmount >= UserData.selectedAccount.AmountWithdrawable)
         {
-            Utility.PrintMessage("Insufficient fund", false);
+            Utility.PrintMessage($"{Languages.Display(21)}", false);
             Utility.PressEnterToContinue();
             return;
         }
 
-        startTransfer: long accountNumber = Validate.Convert<long>("the account number you want to transfer to");
+        startTransfer: long accountNumber = Validate.Convert<long>($"{Languages.Display(31)}");
 
         try
         {
@@ -44,7 +46,7 @@ internal partial class Atm
         }
         catch
         {
-            Utility.PrintMessage("Account number invalid...please input a valid account number", false);
+            Utility.PrintMessage($"{Languages.Display(32)}", false);
             Thread.Sleep(2000);
             goto startTransfer;
         }
@@ -52,28 +54,28 @@ internal partial class Atm
 
         if (UserData.transferAccount.AccountNumber == UserData.selectedAccount.AccountNumber)
         {
-            Utility.PrintMessage("Cannot transfer to your account...please input a valid account number", false);
+            Utility.PrintMessage($"{Languages.Display(33)}", false);
             Thread.Sleep(2000);
             goto startTransfer;
         }
 
-        Utility.Loading("Please wait while your transaction is processing", ".", 7, 500);
+        Utility.Loading($"{Languages.Display(34)}", ".", 7, 500);
 
-        Console.WriteLine($"Transfer {Utility.FormatCurrency(transferAmount)} to {UserData.transferAccount.FullName}");
+        Console.WriteLine($"{Languages.Display(35)} {Utility.FormatCurrency(transferAmount)} {Languages.Display(36)} {UserData.transferAccount.FullName}");
 
-        question: int answer = Validate.Convert<int>("1 to continue and 2 to terminate");
+        question: int answer = Validate.Convert<int>($"{Languages.Display(37)}");
 
         if (answer == 2)
             return;
 
         if (answer <= 0 || answer > 2)
         {
-            Utility.PrintMessage("Invalid option", false);
+            Utility.PrintMessage($"{Languages.Display(20)}", false);
             goto question;
         }
 
-        Utility.Loading("Please wait", ".", 6, 400);
-        Utility.PrintMessage($"Transfer of {Utility.FormatCurrency(transferAmount)} to {UserData.transferAccount.FullName} was successful", true);
+        Utility.Loading($"{Languages.Display(5)}", ".", 6, 400);
+        Utility.PrintMessage($"{Languages.Display(38)} {Utility.FormatCurrency(transferAmount)} {Languages.Display(39)} {UserData.transferAccount.FullName} {Languages.Display(40)}", true);
         Utility.PressEnterToContinue();
 
         //update senders balance
@@ -83,10 +85,10 @@ internal partial class Atm
         UserData.transferAccount.AccountBalance += transferAmount;
 
         //update senders transaction history
-        InsertTransaction(UserData.selectedAccount.Id, TransactionType.Transfer, Utility.FormatCurrency(transferAmount), $"Cash transfer to {UserData.transferAccount.FullName} at shege bank atm");
+        InsertTransaction(UserData.selectedAccount.Id, $"{Languages.Display(89)}", Utility.FormatCurrency(transferAmount), $"{Languages.Display(52)} {UserData.transferAccount.FullName} {Languages.Display(54)}");
 
         //update recievers transaction history
-        InsertTransaction(UserData.transferAccount.Id, TransactionType.Deposit, Utility.FormatCurrency(transferAmount), $"Cash transfer from {UserData.selectedAccount.FullName} at shege bank atm");
+        InsertTransaction(UserData.transferAccount.Id, $"{Languages.Display(87)}", Utility.FormatCurrency(transferAmount), $"{Languages.Display(53)} {UserData.selectedAccount.FullName} {Languages.Display(54)}");
     }
     public void Airtime()
     {
@@ -98,7 +100,7 @@ internal partial class Atm
     public void MobileNumberChoice()
     {
         UserScreen.RechargeChoice();
-        option: int airtimeOption = Validate.Convert<int>("option");
+        option: int airtimeOption = Validate.Convert<int>($"{Languages.Display(19)}");
 
         switch (airtimeOption)
         {
@@ -106,16 +108,16 @@ internal partial class Atm
                 selectedMobileNumber = UserData.selectedAccount.MobileNumber;
                 break;
             case (int)MobileChoice.Others:
-                selectedMobileNumber = Validate.Convert<long>("the mobile number you want to recharge");
+                selectedMobileNumber = Validate.Convert<long>($"{Languages.Display(41)}");
                 break;
             default:
-                Utility.PrintMessage("Invalid input", false);
+                Utility.PrintMessage($"{Languages.Display(20)}", false);
                 goto option;
         }
     }
     public void ValidateAirtime()
     {
-        option: int airtimeOption = Validate.Convert<int>("option");
+        option: int airtimeOption = Validate.Convert<int>($"{Languages.Display(19)}");
 
         switch (airtimeOption)
         {
@@ -143,7 +145,7 @@ internal partial class Atm
     {
         if (airtimeAmount >= UserData.selectedAccount?.AmountWithdrawable)
         {
-            Utility.PrintMessage("Insufficient fund", false);
+            Utility.PrintMessage($"{Languages.Display(21)}", false);
             Utility.PressEnterToContinue();
             return;
         }
@@ -152,25 +154,25 @@ internal partial class Atm
     }
     public void OtherAirtime()
     {
-        startRecharge: int otherRechargeAmount = Validate.Convert<int>("the amount you want to recharge");
+        startRecharge: int otherRechargeAmount = Validate.Convert<int>($"{Languages.Display(42)}");
 
         if (otherRechargeAmount <= 0)
         {
-            Utility.PrintMessage("Amount must be greater than 0", false);
+            Utility.PrintMessage($"{Languages.Display(23)}", false);
             Thread.Sleep(2000);
             goto startRecharge;
         }
 
         if (otherRechargeAmount > 20000)
         {
-            Utility.PrintMessage($"You cannot recharge more than {Utility.FormatCurrency(20000)} at a time", false);
+            Utility.PrintMessage($"{Languages.Display(43)} {Utility.FormatCurrency(20000)} {Languages.Display(44)}", false);
             Thread.Sleep(2000);
             goto startRecharge;
         }
 
         if (otherRechargeAmount >= UserData.selectedAccount?.AmountWithdrawable)
         {
-            Utility.PrintMessage("Insufficient fund", false);
+            Utility.PrintMessage($"{Languages.Display(21)}", false);
             Utility.PressEnterToContinue();
             return;
         }
@@ -180,32 +182,32 @@ internal partial class Atm
 
     public void RechargeMessage(decimal amount)
     {
-        Utility.Loading("Please wait", ".", 6, 500);
+        Utility.Loading($"{Languages.Display(5)}", ".", 6, 500);
 
-        Console.WriteLine($"Recharge mobile no : {selectedMobileNumber} with {Utility.FormatCurrency(amount)}");
+        Console.WriteLine($"{Languages.Display(45)} : {selectedMobileNumber} {Languages.Display(46)} {Utility.FormatCurrency(amount)}");
         Thread.Sleep(3000);
-        Console.Write("Do you wish to continue? ");
-        question: int answer = Validate.Convert<int>("1 to continue and 2 to terminate");
+
+        question: int answer = Validate.Convert<int>($"{Languages.Display(37)}");
 
         if (answer == 2)
             return;
 
         if (answer <= 0 || answer > 2)
         {
-            Utility.PrintMessage("Invalid option", false);
+            Utility.PrintMessage($"{Languages.Display(20)}", false);
             goto question;
         }
 
         Utility.Loading("", "", 5, 500);
-        Utility.PrintMessage($"Mobile no : {selectedMobileNumber} has been recharged with {Utility.FormatCurrency(amount)} successfully", true);
+        Utility.PrintMessage($"{Languages.Display(47)} : {selectedMobileNumber} {Languages.Display(48)} {Utility.FormatCurrency(amount)} {Languages.Display(49)}", true);
         Utility.PressEnterToContinue();
 
         UserData.selectedAccount.AccountBalance -= amount;
 
-        InsertTransaction(UserData.selectedAccount.Id, TransactionType.Airtime, Utility.FormatCurrency(amount), $"Airtime top-up at shege bank atm");
+        InsertTransaction(UserData.selectedAccount.Id, $"{Languages.Display(90)}", Utility.FormatCurrency(amount), $"{Languages.Display(55)}");
     }
 
-    public void InsertTransaction(int userBankAccountId, TransactionType transactionType, string amount, string description)
+    public void InsertTransaction(int userBankAccountId, string transactionType, string amount, string description)
     {
         var tracker = new TransactionTracker
         {
@@ -231,7 +233,7 @@ internal partial class Atm
 
         if (count > 0)
         {
-            ConsoleTable table = new("Id", "Transaction Date", "Type", "Amount", "Description");
+            ConsoleTable table = new(Languages.Display(56), Languages.Display(57), Languages.Display(58), Languages.Display(59), Languages.Display(60));
 
             foreach (var display in filteredList)
             {
@@ -240,10 +242,10 @@ internal partial class Atm
             table.Options.EnableCount = false;
             table.Write();
 
-            Utility.PrintMessage($"No of transaction(s) : {count}", true);
+            Utility.PrintMessage($"{Languages.Display(61)} : {count}", true);
         }
         else
-            Utility.PrintMessage("You have no transaction(s) yet", false);
+            Utility.PrintMessage($"{Languages.Display(62)}", false);
 
         Utility.PressEnterToContinue();
     }

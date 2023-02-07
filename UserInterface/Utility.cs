@@ -1,13 +1,14 @@
-﻿using System.Globalization;
+﻿using ShegeBank.LanguageChoice;
+using System.Globalization;
 using System.Text;
 
-namespace ShegeBank.UI;
+namespace ShegeBank.UserInterface;
 
 internal class Utility
-{
+{    
     public static string GetUserInput(string prompt)
     {
-        Console.Write($"\nEnter {prompt} : ");
+        Console.Write($"\n{prompt} : ");
         string? input = Console.ReadLine();
         return input;
     }
@@ -20,11 +21,10 @@ internal class Utility
 
         Console.WriteLine(message);
         Console.ForegroundColor = ConsoleColor.White;
-        //PressEnterToContinue();
     }
     public static void PressEnterToContinue()
     {
-        Console.Write("\nPress Enter to Continue");
+        Console.Write($"\n{Languages.Display(0)}");
         Console.ReadLine();
     }
     public static int GetUserPin(string prompt)
@@ -52,7 +52,7 @@ internal class Utility
                 }
                 else
                 {
-                    PrintMessage("\nInvalid pin...enter your 4 digit pin", false);
+                    PrintMessage($"\n{Languages.Display(1)}", false);
                     input.Clear();
                     isPrompt = true;
                     continue;
@@ -74,7 +74,7 @@ internal class Utility
         bool success = int.TryParse(input.ToString(), out pin);
         if (success == false)
         {
-            PrintMessage("\nPin not in correct format...enter your 4 digit number", false);
+            PrintMessage($"\n{Languages.Display(2)}", false);
             isPrompt = true;
             goto start;
         }
@@ -91,7 +91,6 @@ internal class Utility
             Thread.Sleep(timer);
         }
         Console.Clear();
-        //PressEnterToContinue();
     }
 
     private static CultureInfo culture = new CultureInfo("en-US");

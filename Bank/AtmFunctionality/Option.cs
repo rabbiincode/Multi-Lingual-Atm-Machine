@@ -1,5 +1,6 @@
 ﻿using ShegeBank.Enum;
-using ShegeBank.UI;
+using ShegeBank.LanguageChoice;
+using ShegeBank.UserInterface;
 
 namespace ShegeBank.Bank.AtmFunctionality;
 internal class Option
@@ -8,7 +9,7 @@ internal class Option
     {
         Atm atm= new();
 
-        start: int input = Validate.Convert<int>("any option to continue");
+        start: int input = Validate.Convert<int>($"{Languages.Display(63)}");
 
         switch (input)
         {
@@ -40,7 +41,7 @@ internal class Option
                 Pick.Question();
                 break;
             default:
-                Utility.PrintMessage("Invalid input... try again", false);
+                Utility.PrintMessage($"{Languages.Display(3)}", false);
                 goto start;
         }
     }

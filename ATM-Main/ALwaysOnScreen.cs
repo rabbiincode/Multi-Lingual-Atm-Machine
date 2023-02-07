@@ -1,5 +1,5 @@
-﻿using ShegeBank.Bank.AtmFunctionality;
-using ShegeBank.UI;
+﻿using ShegeBank.Bank;
+using ShegeBank.UserInterface;
 
 namespace ShegeBank.ATM_Main;
 
